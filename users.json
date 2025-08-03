@@ -1,0 +1,36 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "admin",
+      "password": "spaiirl2025",
+      "name": "SPAIIRL Admin",
+      "email": "admin@spaiirl.com",
+      "role": "admin"
+    },
+    {
+      "id": 2,
+      "username": "founder1",
+      "password": "founder123",
+      "name": "Founder One",
+      "email": "founder1@spaiirl.com",
+      "role": "founder"
+    },
+    {
+      "id": 3,
+      "username": "founder2",
+      "password": "founder456",
+      "name": "Founder Two",
+      "email": "founder2@spaiirl.com",
+      "role": "founder"
+    },
+    {
+      "id": 4,
+      "username": "researcher",
+      "password": "research789",
+      "name": "Research Team",
+      "email": "research@spaiirl.com",
+      "role": "researcher"
+    }
+  ]
+}

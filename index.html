@@ -35,6 +35,9 @@
     <!-- Google Identity Services -->
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     
+    <!-- Google APIs for Drive access -->
+    <script src="https://apis.google.com/js/api.js"></script>
+    
     <!-- Theme color for mobile browsers -->
     <meta name="theme-color" content="#7c3aed">
     <meta name="msapplication-TileColor" content="#7c3aed">
@@ -102,21 +105,21 @@
             <h2>Collaboration Tools</h2>
             <p>Access all your essential collaboration tools in one place</p>
             <div class="tools-grid">
-                <div class="tool-card" onclick="openTool('sheets')">
+                <div class="tool-card" onclick="openSpecificSheet()">
                     <div class="tool-icon">
                         <i class="fas fa-table"></i>
                     </div>
                     <h3>Google Sheets</h3>
-                    <p>Collaborative spreadsheets for data analysis and planning</p>
-                    <button class="tool-btn">Open Sheets</button>
+                    <p>SPAIIRL collaborative spreadsheet for data analysis and planning</p>
+                    <button class="tool-btn">Open SPAIIRL Sheet</button>
                 </div>
-                <div class="tool-card" onclick="openTool('docs')">
+                <div class="tool-card" onclick="openSpecificDoc()">
                     <div class="tool-icon">
                         <i class="fas fa-file-alt"></i>
                     </div>
-                    <h3>Google Docs</h3>
-                    <p>Real-time document collaboration and editing</p>
-                    <button class="tool-btn">Open Docs</button>
+                    <h3>Reference Questions for Interview</h3>
+                    <p>Interview preparation questions and reference materials</p>
+                    <button class="tool-btn">Open Interview Docs</button>
                 </div>
                 <div class="tool-card" onclick="openTool('slides')">
                     <div class="tool-icon">
@@ -142,10 +145,51 @@
     <section id="calendar" class="calendar-section">
         <div class="container">
             <h2>Team Calendar</h2>
-            <p>Schedule meetings and track important events</p>
-            <div class="calendar-container">
+            <p>Schedule meetings and track important events from your Google Calendar</p>
+            
+            <!-- Google Calendar Integration -->
+            <div class="google-calendar-container">
+                <div class="calendar-auth-status">
+                    <i class="fas fa-calendar" id="calendar-status-icon"></i>
+                    <span id="calendar-status-text">Sign in to view your Google Calendar</span>
+                    <button id="calendar-auth-btn" class="calendar-auth-button" onclick="authorizeCalendar()">
+                        <i class="fas fa-google"></i> Connect Calendar
+                    </button>
+                </div>
+                
+                <div id="google-calendar-widget" class="google-calendar-widget" style="display: none;">
+                    <div class="calendar-controls">
+                        <button onclick="loadPreviousMonth()" class="calendar-nav-btn">
+                            <i class="fas fa-chevron-left"></i> Previous
+                        </button>
+                        <h3 id="calendar-month-year"></h3>
+                        <button onclick="loadNextMonth()" class="calendar-nav-btn">
+                            Next <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                    
+                    <div id="calendar-events-list" class="calendar-events-list">
+                        <div class="loading-events">
+                            <i class="fas fa-spinner fa-spin"></i>
+                            <span>Loading your calendar events...</span>
+                        </div>
+                    </div>
+                    
+                    <div class="calendar-actions">
+                        <button onclick="refreshCalendar()" class="btn-primary">
+                            <i class="fas fa-sync-alt"></i> Refresh Events
+                        </button>
+                        <button onclick="openGoogleCalendar()" class="btn-secondary">
+                            <i class="fas fa-external-link-alt"></i> Open Google Calendar
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Fallback Static Calendar -->
+            <div class="calendar-container" id="static-calendar">
                 <div class="calendar-header">
-                    <button id="prevMonth" class="calendar-nav">
+                    <button id="prevMonth" class="calendar-nav" onclick="previousMonth()">
                         <i class="fas fa-chevron-left"></i>
                     </button>
                     <h3 id="currentMonth"></h3>
@@ -233,13 +277,11 @@
                 </div>
                 <button type="submit" class="btn-primary full-width">Sign In</button>
             </form>
-            <div class="divider">
-                <span>or</span>
+            <div class="auth-info">
+                <p><strong>Demo Credentials:</strong></p>
+                <p>Username: <code>admin</code> | Password: <code>spaiirl2025</code></p>
+                <p>Username: <code>founder1</code> | Password: <code>founder123</code></p>
             </div>
-            <button class="btn-google">
-                <i class="fab fa-google"></i>
-                Sign in with Google
-            </button>
         </div>
     </div>
 
@@ -277,6 +319,80 @@
         </div>
     </footer>
 
+    <!-- Floating Drive Access Button -->
+    <div id="floating-chat-btn" class="floating-chat-btn">
+        <i class="fas fa-folder-open"></i>
+        <span class="chat-tooltip">Drive Access</span>
+    </div>
+
+    <!-- Floating Drive Access Panel -->
+    <div id="floating-chat-window" class="floating-chat-window">
+        <div class="floating-chat-header">
+            <div class="chat-header-content">
+                <i class="fas fa-google-drive"></i>
+                <span>Google Drive Files</span>
+            </div>
+            <button id="close-floating-chat" class="close-floating-chat">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <div class="drive-status">
+            <div class="status-row">
+                <i class="fas fa-circle" id="drive-status-indicator" style="color: #ef4444;"></i>
+                <span id="drive-status-text">Not connected</span>
+            </div>
+            <div class="file-count-row">
+                <i class="fas fa-file"></i>
+                <span id="drive-files-count">0 files</span>
+            </div>
+        </div>
+        
+        <div class="drive-actions">
+            <button onclick="connectToDrive()" class="drive-btn primary" id="connect-btn">
+                <i class="fas fa-plug"></i> Connect to Drive
+            </button>
+            <button onclick="refreshDriveFiles()" class="drive-btn secondary" id="refresh-btn" disabled>
+                <i class="fas fa-sync-alt"></i> Refresh
+            </button>
+        </div>
+        
+        <div class="file-search">
+            <input type="text" id="file-search" placeholder="Search your files..." disabled>
+            <button id="search-btn" class="search-btn" disabled>
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+        
+        <div class="file-list" id="file-list">
+            <div class="no-files-message">
+                <i class="fas fa-cloud-upload-alt"></i>
+                <p>Connect to Google Drive to access your files</p>
+                <small>Sign in first, then click "Connect to Drive"</small>
+            </div>
+        </div>
+        
+        <div class="quick-access">
+            <h4><i class="fas fa-bolt"></i> Quick Access</h4>
+            <div class="quick-links">
+                <button onclick="openSpecificSheet()" class="quick-link">
+                    <i class="fas fa-table"></i>
+                    <span>SPAIIRL Sheets</span>
+                </button>
+                <button onclick="openSpecificDoc()" class="quick-link">
+                    <i class="fas fa-file-alt"></i>
+                    <span>Interview Docs</span>
+                </button>
+                <button onclick="openGoogleCalendar()" class="quick-link">
+                    <i class="fas fa-calendar"></i>
+                    <span>Calendar</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script src="script.js"></script>
+    <script async defer src="https://apis.google.com/js/api.js"></script>
+    <script async defer src="https://accounts.google.com/gsi/client"></script>
 </body>
 </html>
