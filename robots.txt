@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://sahilyousafp.github.io/SPAIIRL_Documentation-Website/sitemap.xml

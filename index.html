@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPAIIRL - Strategic Planning and AI Research Lab</title>
+    <meta name="description" content="Collaboration hub for SPAIIRL founders to share assets, access Google Workspace tools, and coordinate strategic planning initiatives.">
+    <meta name="keywords" content="SPAIIRL, Strategic Planning, AI Research, Collaboration, Google Workspace, Miro, Calendar">
+    <meta name="author" content="SPAIIRL Team">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://sahilyousafp.github.io/SPAIIRL_Documentation-Website/">
+    <meta property="og:title" content="SPAIIRL - Strategic Planning and AI Research Lab">
+    <meta property="og:description" content="Collaboration hub for SPAIIRL founders to share assets and coordinate strategic initiatives.">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://sahilyousafp.github.io/SPAIIRL_Documentation-Website/">
+    <meta property="twitter:title" content="SPAIIRL - Strategic Planning and AI Research Lab">
+    <meta property="twitter:description" content="Collaboration hub for SPAIIRL founders to share assets and coordinate strategic initiatives.">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iOCIgZmlsbD0iIzdjM2FlZCIvPgo8c3ZnIHg9IjgiIHk9IjgiIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjIiPgo8cGF0aCBkPSJNMjEgMTZWOGEyIDIgMCAwIDAtMS0xLjczbC03LTRhMiAyIDAgMCAwLTIgMGwtNyA0QTIgMiAwIDAgMCAzIDh2OGEyIDIgMCAwIDAgMSAxLjczbDcgNGEyIDIgMCAwIDAgMiAwbDctNEEyIDIgMCAwIDAgMjEgMTZ6Ii8+CjwvcGF0aD4KPC9zdmc+Cjwvc3ZnPgo=">
+    
+    <!-- Manifest -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Theme color for mobile browsers -->
+    <meta name="theme-color" content="#7c3aed">
+    <meta name="msapplication-TileColor" content="#7c3aed">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <h2>SPAIIRL</h2>
+                <span>Strategic Planning and AI Research Lab</span>
+            </div>
+            <div class="nav-menu">
+                <a href="#home" class="nav-link active">Home</a>
+                <a href="#collaboration" class="nav-link">Collaboration</a>
+                <a href="#calendar" class="nav-link">Calendar</a>
+                <a href="#resources" class="nav-link">Resources</a>
+                <button id="loginBtn" class="login-btn">
+                    <i class="fas fa-user"></i> Sign In
+                </button>
+            </div>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Welcome to SPAIIRL</h1>
+            <p>Strategic Planning and AI Research Lab - Your collaboration hub for innovation and research</p>
+            <div class="hero-buttons">
+                <button class="btn-primary" onclick="scrollToSection('collaboration')">
+                    <i class="fas fa-rocket"></i> Start Collaborating
+                </button>
+                <button class="btn-secondary" onclick="scrollToSection('resources')">
+                    <i class="fas fa-book"></i> Explore Resources
+                </button>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <div class="floating-cards">
+                <div class="card">
+                    <i class="fas fa-brain"></i>
+                    <span>AI Research</span>
+                </div>
+                <div class="card">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Strategic Planning</span>
+                </div>
+                <div class="card">
+                    <i class="fas fa-users"></i>
+                    <span>Collaboration</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Collaboration Tools Section -->
+    <section id="collaboration" class="collaboration">
+        <div class="container">
+            <h2>Collaboration Tools</h2>
+            <p>Access all your essential collaboration tools in one place</p>
+            <div class="tools-grid">
+                <div class="tool-card" onclick="openTool('sheets')">
+                    <div class="tool-icon">
+                        <i class="fas fa-table"></i>
+                    </div>
+                    <h3>Google Sheets</h3>
+                    <p>Collaborative spreadsheets for data analysis and planning</p>
+                    <button class="tool-btn">Open Sheets</button>
+                </div>
+                <div class="tool-card" onclick="openTool('docs')">
+                    <div class="tool-icon">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <h3>Google Docs</h3>
+                    <p>Real-time document collaboration and editing</p>
+                    <button class="tool-btn">Open Docs</button>
+                </div>
+                <div class="tool-card" onclick="openTool('slides')">
+                    <div class="tool-icon">
+                        <i class="fas fa-presentation"></i>
+                    </div>
+                    <h3>Google Slides</h3>
+                    <p>Create and share presentations collaboratively</p>
+                    <button class="tool-btn">Open Slides</button>
+                </div>
+                <div class="tool-card" onclick="openTool('miro')">
+                    <div class="tool-icon">
+                        <i class="fas fa-palette"></i>
+                    </div>
+                    <h3>Miro Board</h3>
+                    <p>Visual collaboration and brainstorming workspace</p>
+                    <button class="tool-btn">Open Miro</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Calendar Section -->
+    <section id="calendar" class="calendar-section">
+        <div class="container">
+            <h2>Team Calendar</h2>
+            <p>Schedule meetings and track important events</p>
+            <div class="calendar-container">
+                <div class="calendar-header">
+                    <button id="prevMonth" class="calendar-nav">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <h3 id="currentMonth"></h3>
+                    <button id="nextMonth" class="calendar-nav">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+                <div class="calendar-grid" id="calendarGrid">
+                    <!-- Calendar will be generated by JavaScript -->
+                </div>
+                <div class="calendar-actions">
+                    <button class="btn-primary" onclick="openGoogleCalendar()">
+                        <i class="fas fa-plus"></i> Schedule Meeting
+                    </button>
+                    <button class="btn-secondary" onclick="openGoogleCalendar()">
+                        <i class="fas fa-external-link-alt"></i> Open Google Calendar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Resources Section -->
+    <section id="resources" class="resources">
+        <div class="container">
+            <h2>Resources & Assets</h2>
+            <div class="resources-grid">
+                <div class="resource-card">
+                    <div class="resource-icon">
+                        <i class="fas fa-folder"></i>
+                    </div>
+                    <h3>Shared Documents</h3>
+                    <p>Access shared research papers, reports, and documentation</p>
+                    <button class="resource-btn">Browse Files</button>
+                </div>
+                <div class="resource-card">
+                    <div class="resource-icon">
+                        <i class="fas fa-chart-pie"></i>
+                    </div>
+                    <h3>Analytics Dashboard</h3>
+                    <p>Track project progress and team performance metrics</p>
+                    <button class="resource-btn">View Dashboard</button>
+                </div>
+                <div class="resource-card">
+                    <div class="resource-icon">
+                        <i class="fas fa-code-branch"></i>
+                    </div>
+                    <h3>Project Repository</h3>
+                    <p>Access code repositories and version control</p>
+                    <button class="resource-btn">View GitHub</button>
+                </div>
+                <div class="resource-card">
+                    <div class="resource-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h3>Learning Resources</h3>
+                    <p>AI research papers, tutorials, and educational content</p>
+                    <button class="resource-btn">Explore</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Sign In to SPAIIRL</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">Username or Email</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <div class="form-options">
+                    <label class="checkbox-container">
+                        <input type="checkbox" id="rememberMe">
+                        <span class="checkmark"></span>
+                        Remember me
+                    </label>
+                    <a href="#" class="forgot-password">Forgot password?</a>
+                </div>
+                <button type="submit" class="btn-primary full-width">Sign In</button>
+            </form>
+            <div class="divider">
+                <span>or</span>
+            </div>
+            <button class="btn-google">
+                <i class="fab fa-google"></i>
+                Sign in with Google
+            </button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>SPAIIRL</h3>
+                    <p>Strategic Planning and AI Research Lab</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#collaboration">Collaboration</a></li>
+                        <li><a href="#calendar">Calendar</a></li>
+                        <li><a href="#resources">Resources</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <p>Email: info@spaiirl.com</p>
+                    <p>Phone: +1 (555) 123-4567</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 SPAIIRL. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

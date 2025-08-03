@@ -1,0 +1,6 @@
+theme: jekyll-theme-minimal
+title: SPAIIRL - Strategic Planning and AI Research Lab
+description: Collaboration hub for SPAIIRL founders to share assets and collaborate
+plugins:
+  - jekyll-sitemap
+  - jekyll-feed
