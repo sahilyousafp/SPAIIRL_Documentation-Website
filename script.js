@@ -1,3 +1,191 @@
+// Google OAuth Configuration
+const GOOGLE_CLIENT_ID = '884350416893-i2alghq9g6qjn77ja199ore89rufcjav.apps.googleusercontent.com';
+const GOOGLE_PROJECT_ID = 'spairl';
+
+// Initialize Google Identity Services
+function initGoogleAuth() {
+    if (typeof google !== 'undefined') {
+        google.accounts.id.initialize({
+            client_id: GOOGLE_CLIENT_ID,
+            callback: handleCredentialResponse,
+            auto_select: false,
+            cancel_on_tap_outside: false
+        });
+        
+        console.log('Google Identity Services initialized');
+        attachGoogleSignIn();
+    } else {
+        console.error('Google Identity Services not loaded');
+    }
+}
+
+// Handle credential response from Google
+function handleCredentialResponse(response) {
+    try {
+        // Decode the JWT token
+        const payload = JSON.parse(atob(response.credential.split('.')[1]));
+        
+        // Handle successful sign-in
+        handleGoogleSignInSuccess(payload, response.credential);
+    } catch (error) {
+        console.error('Failed to parse Google credential:', error);
+        alert('Google Sign-In failed. Please try again.');
+    }
+}
+
+// Attach Google Sign-In to button
+function attachGoogleSignIn() {
+    const googleBtn = document.querySelector('.btn-google');
+    if (googleBtn) {
+        googleBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            signInWithGoogle();
+        });
+    }
+}
+
+// Google Sign-In function using One Tap
+function signInWithGoogle() {
+    if (typeof google !== 'undefined') {
+        google.accounts.id.prompt((notification) => {
+            if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+                // Fallback to popup if One Tap is not available
+                google.accounts.id.renderButton(
+                    document.createElement('div'),
+                    {
+                        theme: 'outline',
+                        size: 'large',
+                        width: '100%'
+                    }
+                );
+                
+                // Create a temporary popup for sign-in
+                showGoogleSignInPopup();
+            }
+        });
+    }
+}
+
+// Show Google Sign-In popup as fallback
+function showGoogleSignInPopup() {
+    const popup = window.open(
+        `https://accounts.google.com/oauth/authorize?client_id=${GOOGLE_CLIENT_ID}&redirect_uri=${window.location.origin}&response_type=code&scope=openid email profile`,
+        'google-signin',
+        'width=500,height=600,scrollbars=yes,resizable=yes'
+    );
+    
+    // Monitor popup for completion
+    const checkClosed = setInterval(() => {
+        if (popup.closed) {
+            clearInterval(checkClosed);
+            // Check if user data was stored (this would be handled by redirect)
+            checkExistingAuth();
+        }
+    }, 1000);
+}
+
+// Handle successful Google sign-in
+function handleGoogleSignInSuccess(payload, credential) {
+    const userName = payload.name;
+    const userEmail = payload.email;
+    const userImage = payload.picture;
+    
+    // Update UI
+    const loginBtn = document.getElementById('loginBtn');
+    loginBtn.innerHTML = `<img src="${userImage}" style="width: 24px; height: 24px; border-radius: 50%; margin-right: 8px;"> Welcome, ${userName.split(' ')[0]}`;
+    loginBtn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+    
+    // Close modal
+    const loginModal = document.getElementById('loginModal');
+    if (loginModal) {
+        loginModal.style.display = 'none';
+    }
+    
+    // Store user info in localStorage
+    localStorage.setItem('userProfile', JSON.stringify({
+        name: userName,
+        email: userEmail,
+        image: userImage,
+        credential: credential,
+        signedInAt: new Date().toISOString()
+    }));
+    
+    console.log('User signed in:', userName, userEmail);
+    alert(`Welcome to SPAIIRL, ${userName}!`);
+    
+    // Update login button click behavior
+    setupSignOutBehavior();
+}
+
+// Setup sign-out behavior for logged-in users
+function setupSignOutBehavior() {
+    const loginBtn = document.getElementById('loginBtn');
+    if (loginBtn) {
+        // Remove existing event listeners
+        loginBtn.replaceWith(loginBtn.cloneNode(true));
+        const newLoginBtn = document.getElementById('loginBtn');
+        
+        newLoginBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            if (confirm('Do you want to sign out?')) {
+                signOutUser();
+            }
+        });
+    }
+}
+
+// Sign out function
+function signOutUser() {
+    // Clear stored user data
+    localStorage.removeItem('userProfile');
+    
+    // Reset login button
+    const loginBtn = document.getElementById('loginBtn');
+    loginBtn.innerHTML = '<i class="fas fa-user"></i> Sign In';
+    loginBtn.style.background = 'linear-gradient(135deg, #7c3aed, #a855f7)';
+    
+    // Restore original login functionality
+    loginBtn.replaceWith(loginBtn.cloneNode(true));
+    const newLoginBtn = document.getElementById('loginBtn');
+    newLoginBtn.addEventListener('click', function() {
+        const loginModal = document.getElementById('loginModal');
+        if (loginModal) {
+            loginModal.style.display = 'block';
+        }
+    });
+    
+    console.log('User signed out');
+    alert('You have been signed out successfully.');
+}
+
+// Check if user is already signed in
+function checkExistingAuth() {
+    const userProfile = localStorage.getItem('userProfile');
+    if (userProfile) {
+        try {
+            const profile = JSON.parse(userProfile);
+            const loginBtn = document.getElementById('loginBtn');
+            
+            // Check if sign-in is still valid (within 24 hours)
+            const signedInAt = new Date(profile.signedInAt);
+            const now = new Date();
+            const hoursDiff = (now - signedInAt) / (1000 * 60 * 60);
+            
+            if (hoursDiff < 24) {
+                loginBtn.innerHTML = `<img src="${profile.image}" style="width: 24px; height: 24px; border-radius: 50%; margin-right: 8px;"> Welcome, ${profile.name.split(' ')[0]}`;
+                loginBtn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+                setupSignOutBehavior();
+            } else {
+                // Session expired, clear stored data
+                localStorage.removeItem('userProfile');
+            }
+        } catch (error) {
+            console.error('Error parsing stored user profile:', error);
+            localStorage.removeItem('userProfile');
+        }
+    }
+}
+
 // Navigation functionality
 document.addEventListener('DOMContentLoaded', function() {
     const hamburger = document.querySelector('.hamburger');
@@ -7,6 +195,19 @@ document.addEventListener('DOMContentLoaded', function() {
     const loginModal = document.getElementById('loginModal');
     const closeModal = document.querySelector('.close');
     const loginForm = document.getElementById('loginForm');
+    
+    // Initialize Google Auth when the page loads
+    if (typeof google !== 'undefined') {
+        initGoogleAuth();
+    } else {
+        // Wait for Google API to load
+        window.addEventListener('load', function() {
+            setTimeout(initGoogleAuth, 1000);
+        });
+    }
+    
+    // Check for existing authentication
+    checkExistingAuth();
 
     // Mobile menu toggle
     hamburger.addEventListener('click', function() {
